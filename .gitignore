@@ -60,3 +60,6 @@ typings/
 # Sublime Text Files
 *.sublime-project
 *.sublime-workspace
+
+# Built Files
+dist/
