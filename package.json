@@ -10,14 +10,19 @@
     "build": "webpack --colors --progress",
     "build:prod": "yarn run build -p",
     "devserver": "webpack-dev-server",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest",
+    "test:watch": "yarn run test --watch"
   },
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-core": "^6.26.0",
+    "babel-jest": "^21.2.0",
     "babel-loader": "^7.1.2",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "enzyme": "^3.0.0",
+    "enzyme-adapter-react-16": "^1.0.0",
     "eslint": "^4.3.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-plugin-import": "^2.7.0",
@@ -25,11 +30,20 @@
     "eslint-plugin-react": "^7.1.0",
     "html-webpack-plugin": "^2.30.1",
     "html-webpack-template": "^5.6.0",
+    "jest": "^21.2.1",
+    "react-test-renderer": "^16.0.0",
+    "regenerator-runtime": "^0.11.0",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
   },
   "dependencies": {
+    "prop-types": "^15.6.0",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react-dom": "^16.0.0",
+    "react-router-dom": "^4.2.2"
+  },
+  "jest": {
+    "setupFiles": ["./test-shims.js"],
+    "setupTestFrameworkScriptFile": "./test-setup.js"
   }
 }

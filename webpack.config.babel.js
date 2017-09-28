@@ -38,4 +38,7 @@ export default {
     path: BUILD_DIR,
   },
   plugins: [HTMLWebpackPluginConfig],
+  resolve: {
+    extensions: ['*', '.js', '.jsx'],
+  },
 };
