@@ -1,9 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
+
+import LoginContainer from './containers/LoginContainer';
 
 
 const Root = () => (
-  <h1>Hello, World</h1>
+  <BrowserRouter>
+    <div>
+      <Route path="/login" component={LoginContainer} />
+    </div>
+  </BrowserRouter>
 );
 
 
