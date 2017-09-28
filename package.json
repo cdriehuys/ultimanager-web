@@ -1,0 +1,9 @@
+{
+  "name": "ultimanager-web",
+  "version": "0.0.0",
+  "description": "Web app for managing an Ultimate team.",
+  "main": "index.js",
+  "repository": "https://github.com/cdriehuys/ultimanager-web",
+  "author": "Chathan Driehuys <cdriehuys@gmail.com>",
+  "license": "MIT"
+}
