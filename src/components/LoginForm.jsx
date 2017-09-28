@@ -57,7 +57,7 @@ class LoginForm extends React.Component {
    */
   render() {
     return (
-      <form>
+      <form onSubmit={this.handleSubmit}>
         <label htmlFor="username">Username:</label>
         <input
           id="username"
