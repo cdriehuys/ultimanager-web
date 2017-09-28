@@ -23,7 +23,16 @@ export default {
     historyApiFallback: true,
     port: 8000,
   },
-  entry: path.resolve(SOURCE_DIR, 'index.js'),
+  entry: path.resolve(SOURCE_DIR, 'index.jsx'),
+  module: {
+    rules: [
+      {
+        include: SOURCE_DIR,
+        test: /\.jsx?/,
+        use: 'babel-loader',
+      },
+    ],
+  },
   output: {
     filename: 'bundle.js',
     path: BUILD_DIR,
