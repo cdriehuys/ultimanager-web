@@ -43,6 +43,7 @@
     "react-router-dom": "^4.2.2"
   },
   "jest": {
+    "setupFiles": ["./test-shims.js"],
     "setupTestFrameworkScriptFile": "./test-setup.js"
   }
 }
