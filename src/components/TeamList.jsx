@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 
 
-const TeamList = ({ teams }) => (
+export const TeamList = ({ teams }) => (
   <div>
     <h2>Team List</h2>
     <ul>
@@ -23,4 +24,9 @@ TeamList.propTypes = {
 };
 
 
-export default TeamList;
+export const mapStateToProps = state => ({
+  teams: Object.values(state.teams.byId),
+});
+
+
+export default connect(mapStateToProps)(TeamList);

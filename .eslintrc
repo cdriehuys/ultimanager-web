@@ -3,5 +3,8 @@
         "browser": true,
         "jest": true
     },
-    "extends": "eslint-config-airbnb"
+    "extends": "eslint-config-airbnb",
+    "rules": {
+        "import/no-named-as-default": "off"
+    }
 }
