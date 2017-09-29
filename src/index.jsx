@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import logger from 'redux-logger';
 
 import Dashboard from './containers/Dashboard';
 import LoginContainer from './containers/LoginContainer';
@@ -23,7 +24,7 @@ const store = createStore(
   appReducer,
   initialState,
   composeWithDevTools(
-    applyMiddleware()));
+    applyMiddleware(logger)));
 
 
 const Root = () => (
