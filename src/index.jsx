@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import Dashboard from './containers/Dashboard';
 import LoginContainer from './containers/LoginContainer';
@@ -18,7 +19,11 @@ const initialState = {
   },
 };
 
-const store = createStore(appReducer, initialState);
+const store = createStore(
+  appReducer,
+  initialState,
+  composeWithDevTools(
+    applyMiddleware()));
 
 
 const Root = () => (
