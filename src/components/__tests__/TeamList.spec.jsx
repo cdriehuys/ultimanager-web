@@ -22,8 +22,9 @@ describe('TeamList', () => {
     const { wrapper } = setup({ teams });
 
     teams.forEach((team) => {
-      const item = wrapper.findWhere(node => node.key() === team.id.toString());
-      expect(item.text()).toEqual(team.name);
+      const item = wrapper.find('Link')
+        .findWhere(node => node.prop('to') === `/teams/${team.id}`);
+      expect(item).toHaveLength(1);
     });
   });
 
