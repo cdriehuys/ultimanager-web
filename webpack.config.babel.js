@@ -36,6 +36,7 @@ export default {
   output: {
     filename: 'bundle.js',
     path: BUILD_DIR,
+    publicPath: '/',
   },
   plugins: [HTMLWebpackPluginConfig],
   resolve: {
