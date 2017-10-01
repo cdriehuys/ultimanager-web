@@ -6,6 +6,7 @@ import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import logger from 'redux-logger';
 
+import TeamDetail from './components/TeamDetail';
 import Dashboard from './containers/Dashboard';
 import LoginContainer from './containers/LoginContainer';
 import appReducer from './reducers';
@@ -33,6 +34,7 @@ const Root = () => (
       <div>
         <Route exact path="/" component={Dashboard} />
         <Route path="/login" component={LoginContainer} />
+        <Route path="/teams/:id" component={TeamDetail} />
       </div>
     </BrowserRouter>
   </Provider>
