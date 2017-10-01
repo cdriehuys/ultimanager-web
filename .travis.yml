@@ -3,6 +3,32 @@ node_js: node
 
 cache: yarn
 
+env:
+  global:
+    - AWS_REGION=us-east-1
+    - BUILD_DIR=dist
+    # AWS_ACCESS_KEY_ID
+    - secure: "c7xhBOt62FPw2LETEITlsTPzFj0z0hddFXMVlaw5UyOr3sMah1aB77lqP+keUKwhE6/4Brp6qaWqwk2MwNrBTMIhsh2m2zitFIMh3Z5etNeb5I27oxGhJrBAm52SeGkQkd7BABWJFIDPMbpfR+7dWxj2+nCDiorVVvc6shERnCkx7O6Pf+vgLyJoGz8PcywzS/oJMdzW3/A5im9fzGm6oBY172xDw7gXGd+2k1a0OEhXdYvRZXXBU05Cn7+jFnTX0e2ZtDurJl8R6XpWCZqcp2E7ASbKx/nuUvGFfCjQhF1bgS8qcAGFwrDo3kKeoFCZxRPdxhD4iiGUzNTaoanjDiVfBl0jTtXA8GkeQfXHE/eHEktm9M6Xv372MGP7jc5MZy90/dH5ieROHKuvir8GjbXPgNoqxjo11+Rp504AUDjCzKkTqtVxXz5l2r3Edle9FxMjyDUd7qX75fgk96qrjFiwDSiPa5Px427ffBOoJLtNxMb6uMCvjpl5ZH70CV+2IgFZdWtwz0Gt7O/yQEvCajS56sdFczQQumskdYhPo52KtsKrqL97kR48kZ4CutqnHs6TDaf/POtesIttdjxF10l9OZcIdPPKMHJiRw27WOwZ/fueODZDrXl7aj0VMa1R/CLs0ZPX0dlGzXXTy1WRVfR5YZMwFxIKlBKY0KBlTOs="
+    # AWS_SECRET_ACCESS_KEY
+    - secure: "ROvi+QqIl7XOi1fpsupwGHrI/8gnFYXtHpEaGoXv0SGjwFIYdvwupwOx2k5q8Xz9zWLferp9g58ulkwVOpxCVWW0eGzlrVZ2Ikovnob0YrHmR0G2pIBQ4ne0az+xU3hiyhKkyLPgRgSLeMecb2aWvGYAgeLjsMEmDE+RZWVH9Mkb3hbmdwWpSJcZL2g0y43v/xxj62xqC/FeaclAyihNn1yYWLW2FdCn9oYvYSXjjRqNnbEOqvY59qmEofyMPQN7uUngSyQrbu92pa1nEPs4sWpdU705aWmmV6RiWsrErBAtBovdofmIGpzyRd0AKNF4/rWKrrr3g44LDxZociYgJUcMdLKsZZxQbPM/dHd3DWup0Z6vLVcjZPWT+JuI0txYQRjw0AqjxZ5rfUyDlMLVjQaiRsHcETXMiWFW8v1331uP2pxDpcRThPC5E4xF+sYfHa408wABjbqcQqH9Ol4kpN1cf/qWXea+FlSTJxHbnx5qEY4lrrzpunK1I+rOsBQQn/plzMd7u6BhOXoM4bdcE4SX5y0Cuog4qSGtU7HMYPXMm6gTCEO7R4L/rp26o+CHx+vvLyu8sComHJTzHqBgDYFiezJOKTr52NGYJypvwg/oJKIEKDelfBHHi7u6/NmzgyGfVVfSNBAPeorC1Tz8mKz9AC77WDz5nJtIYHdC4v4="
+
 script:
   - yarn run lint
   - yarn test
+
+before_deploy:
+  - yarn run build:prod
+  - pip install --user awscli
+
+deploy:
+  - provider: script
+    script: ~/.local/bin/aws s3 sync $BUILD_DIR s3://dev.ultimanager.com --region=$AWS_REGION --delete
+    skip_cleanup: yes
+    on:
+      all_branches: yes
+
+  - provider: script
+    script: ~/.local/bin/aws s3 sync $BUILD_DIR s3://ultimanager.com --region=$AWS_REGION --delete
+    skip_cleanup: yes
+    on:
+      branch: master
