@@ -26,9 +26,10 @@ deploy:
     skip_cleanup: yes
     on:
       all_branches: yes
+      condition: '"$TRAVIS_BRANCH" =~ ^(develop|hotfix\/v.*|release\/v.*)$'
 
   - provider: script
     script: ~/.local/bin/aws s3 sync $BUILD_DIR s3://ultimanager.com --region=$AWS_REGION --delete
     skip_cleanup: yes
     on:
-      branch: master
+      tags: yes
