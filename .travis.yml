@@ -16,6 +16,8 @@ script:
   - yarn run lint
   - yarn test
 
+after_success: yarn run codecov
+
 before_deploy:
   - yarn run build:prod
   - pip install --user awscli
