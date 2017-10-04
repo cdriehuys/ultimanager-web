@@ -1,7 +1,5 @@
+import { register } from './registration';
 import { addTeam } from './teams';
 
 
-export { addTeam };
-
-// Dummy default export
-export default {};
+export { addTeam, register };
