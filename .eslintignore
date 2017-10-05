@@ -1,3 +1,6 @@
 # Distributed Files
 dist/
 node_modules/
+
+# Generated coverage report
+coverage/
