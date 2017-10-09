@@ -1,24 +1,28 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import createStore from 'redux-mock-store';
+import { createStore } from 'redux';
+import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { register } from '../../actionCreators';
+import { completeRegistrationWithErrors } from '../../actionCreators/registration';
 import rootReducer from '../../reducers';
+import { getRegistrationErrors } from '../../selectors';
 
-import { RegistrationForm, mapDispatchToProps } from '../RegistrationForm';
+import { RegistrationForm, mapDispatchToProps, mapStateToProps } from '../RegistrationForm';
 
 
 jest.mock('../../services/UltimanagerAPI');
 
 
 const middlewares = [thunk];
-const mockStore = createStore(middlewares);
+const mockStore = createMockStore(middlewares);
 
 
-const setup = () => {
+const setup = (errors = {}) => {
   const props = {
     onSubmit: jest.fn(),
+    errors,
   };
   const wrapper = shallow(<RegistrationForm {...props} />);
 
@@ -48,6 +52,26 @@ describe('RegistrationForm', () => {
 
     expect(mockEvent.preventDefault).toHaveBeenCalled();
     expect(props.onSubmit).toHaveBeenCalledWith(userData);
+  });
+
+  it('should render any provided errors', () => {
+    const emailError = ['Invalid email.'];
+    const passwordError = ['Invalid password.'];
+    const errors = { email: emailError, password: passwordError };
+
+    const { wrapper } = setup(errors);
+
+    const findErrors = (errorList) => {
+      errorList.forEach((error) => {
+        const errorWrapper = wrapper.findWhere(n => n.key() === error);
+
+        expect(errorWrapper).toHaveLength(1);
+        expect(errorWrapper.text()).toBe(error);
+      });
+    };
+
+    findErrors(emailError);
+    findErrors(passwordError);
   });
 
   describe('input handlers', () => {
@@ -85,6 +109,19 @@ describe('RegistrationForm', () => {
   });
 
   describe('redux connections', () => {
+    it('should pass any form errors from state as props', () => {
+      const errors = { email: ['Invalid email.'] };
+
+      const store = createStore(rootReducer);
+      store.dispatch(completeRegistrationWithErrors(errors));
+
+      const expectedProps = {
+        errors: getRegistrationErrors(store.getState()),
+      };
+
+      expect(mapStateToProps(store.getState())).toEqual(expectedProps);
+    });
+
     it('should pass props that dispatch actions', () => {
       const userData = { email: 'test@example.com', password: 'password' };
 

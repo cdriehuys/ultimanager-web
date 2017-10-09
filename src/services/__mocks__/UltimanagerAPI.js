@@ -1,11 +1,7 @@
-class MockAPI {
-  /**
-   * Assume the request will succeed and return the expected data.
-   */
-  static register(userData) {
-    return Promise.resolve({ email: userData.email });
-  }
-}
+const UltimanagerAPI = jest.genMockFromModule('../UltimanagerAPI').default;
 
 
-export default MockAPI;
+UltimanagerAPI.register.mockImplementation(data => Promise.resolve({ email: data.email }));
+
+
+export default UltimanagerAPI;

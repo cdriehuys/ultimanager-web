@@ -3,8 +3,14 @@ import thunk from 'redux-thunk';
 
 import { Register } from '../../actions';
 import rootReducer from '../../reducers';
+import UltimanagerAPI from '../../services/UltimanagerAPI';
 
-import { completeRegistration, register, sendRegistration } from '../registration';
+import {
+  completeRegistration,
+  completeRegistrationWithErrors,
+  register,
+  sendRegistration,
+} from '../registration';
 
 
 jest.mock('../../services/UltimanagerAPI');
@@ -24,6 +30,18 @@ describe('Registration Action Creators', () => {
       };
 
       expect(completeRegistration(registrationData)).toEqual(expected);
+    });
+  });
+
+  describe('completeRegistrationWithErrors', () => {
+    it('should create an action containing the errors from the request', () => {
+      const errors = { email: 'Invalid email address.' };
+      const expected = {
+        type: Register.REQUEST_COMPLETE_ERRORED,
+        payload: errors,
+      };
+
+      expect(completeRegistrationWithErrors(errors)).toEqual(expected);
     });
   });
 
@@ -53,6 +71,25 @@ describe('Registration Action Creators', () => {
 
         expect(actions[0]).toEqual(sendRegistration(userData));
         expect(actions[1]).toEqual(completeRegistration(responseData));
+      });
+    });
+
+    it('should dispatch actions to start and finish a request with errors', () => {
+      const store = mockStore(rootReducer());
+      const userData = { email: 'test@example.com', password: 'password' };
+      const errors = { email: ['Invalid email address.'] };
+
+      UltimanagerAPI.register.mockImplementationOnce(() => Promise.reject({
+        response: {
+          data: errors,
+        },
+      }));
+
+      return store.dispatch(register(userData)).then(() => {
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual(sendRegistration(userData));
+        expect(actions[1]).toEqual(completeRegistrationWithErrors(errors));
       });
     });
   });

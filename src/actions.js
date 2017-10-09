@@ -5,6 +5,7 @@
 // Registration Actions
 export const Register = {
   REQUEST_COMPLETE: 'Register :: Request Complete',
+  REQUEST_COMPLETE_ERRORED: 'Register :: Request Complete w/ Errors',
   REQUEST_SEND: 'Register :: Request Start',
 };
 

@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { register } from '../actionCreators';
+import { getRegistrationErrors } from '../selectors';
 
 
 export class RegistrationForm extends React.Component {
@@ -40,7 +41,11 @@ export class RegistrationForm extends React.Component {
           onChange={this.handleInputChange}
           type="email"
         />
-        <br />
+        <ul>
+          {this.props.errors.email && this.props.errors.email.map(error => (
+            <li key={error}>{error}</li>
+          ))}
+        </ul>
 
         <label htmlFor="password">Password:</label>
         <input
@@ -49,7 +54,11 @@ export class RegistrationForm extends React.Component {
           onChange={this.handleInputChange}
           type="password"
         />
-        <br />
+        <ul>
+          {this.props.errors.password && this.props.errors.password.map(error => (
+            <li key={error}>{error}</li>
+          ))}
+        </ul>
 
         <button type="submit">Register</button>
       </form>
@@ -57,9 +66,23 @@ export class RegistrationForm extends React.Component {
   }
 }
 
+RegistrationForm.defaultProps = {
+  errors: {},
+};
+
 RegistrationForm.propTypes = {
+  errors: PropTypes.shape({
+    email: PropTypes.arrayOf(PropTypes.string),
+    non_field_erros: PropTypes.arrayOf(PropTypes.string),
+    password: PropTypes.arrayOf(PropTypes.string),
+  }),
   onSubmit: PropTypes.func.isRequired,
 };
+
+
+export const mapStateToProps = state => ({
+  errors: getRegistrationErrors(state),
+});
 
 
 export const mapDispatchToProps = dispatch => ({
@@ -67,4 +90,4 @@ export const mapDispatchToProps = dispatch => ({
 });
 
 
-export default connect(null, mapDispatchToProps)(RegistrationForm);
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationForm);

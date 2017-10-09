@@ -1,11 +1,18 @@
 import { Register } from '../actions';
 
 
-export default (state = { isPending: false }, action = {}) => {
+export default (state = { errors: {}, isPending: false }, action = {}) => {
   switch (action.type) {
     case Register.REQUEST_COMPLETE:
       return {
         ...state,
+        isPending: false,
+      };
+
+    case Register.REQUEST_COMPLETE_ERRORED:
+      return {
+        ...state,
+        errors: action.payload,
         isPending: false,
       };
 

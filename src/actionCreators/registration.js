@@ -8,6 +8,12 @@ export const completeRegistration = payload => ({
 });
 
 
+export const completeRegistrationWithErrors = payload => ({
+  type: Register.REQUEST_COMPLETE_ERRORED,
+  payload,
+});
+
+
 export const sendRegistration = payload => ({
   type: Register.REQUEST_SEND,
   payload,
@@ -17,7 +23,11 @@ export const sendRegistration = payload => ({
 export const register = payload => (dispatch) => {
   dispatch(sendRegistration(payload));
 
-  return UltimanagerAPI.register(payload).then((data) => {
-    dispatch(completeRegistration(data));
-  });
+  return UltimanagerAPI.register(payload)
+    .then((data) => {
+      dispatch(completeRegistration(data));
+    })
+    .catch((error) => {
+      dispatch(completeRegistrationWithErrors(error.response.data));
+    });
 };

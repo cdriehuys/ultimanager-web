@@ -1,4 +1,8 @@
-import { completeRegistration, sendRegistration } from '../../actionCreators/registration';
+import {
+  completeRegistration,
+  completeRegistrationWithErrors,
+  sendRegistration,
+} from '../../actionCreators/registration';
 
 import registrationReducer from '../registration';
 
@@ -6,6 +10,7 @@ import registrationReducer from '../registration';
 describe('Registration Reducer', () => {
   it('should have some initial state', () => {
     const expected = {
+      errors: {},
       isPending: false,
     };
 
@@ -22,6 +27,22 @@ describe('Registration Reducer', () => {
 
     const expected = {
       ...initialState,
+      isPending: false,
+    };
+
+    expect(registrationReducer(initialState, action)).toEqual(expected);
+  });
+
+  it('should handle completing the request with errors', () => {
+    const data = { email: ['This field is required.'] };
+    const action = completeRegistrationWithErrors(data);
+
+    const initialState = registrationReducer();
+    initialState.isPending = true;
+
+    const expected = {
+      ...initialState,
+      errors: data,
       isPending: false,
     };
 
