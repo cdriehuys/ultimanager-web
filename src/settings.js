@@ -1,3 +1,3 @@
 export default {
-  API_ROOT: process.env.API_ROOT || 'http://dev.api.ultimanager.com',
+  API_ROOT: process.env.API_ROOT || 'https://dev.api.ultimanager.com',
 };
