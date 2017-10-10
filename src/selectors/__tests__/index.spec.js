@@ -1,9 +1,19 @@
 import { createStore } from 'redux';
 
-import { completeRegistrationWithErrors } from '../../actionCreators/registration';
+import { completeRegistration, completeRegistrationWithErrors } from '../../actionCreators/registration';
 import rootReducer from '../../reducers';
 
-import { getRegistrationErrors } from '../';
+import { getRegistrationComplete, getRegistrationErrors } from '../';
+
+
+describe('getRegistrationComplete selector', () => {
+  it('should return if the registration is complete', () => {
+    const store = createStore(rootReducer);
+    store.dispatch(completeRegistration({}));
+
+    expect(getRegistrationComplete(store.getState())).toBe(true);
+  });
+});
 
 
 describe('getRegistrationErrors selector', () => {

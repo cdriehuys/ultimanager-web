@@ -5,9 +5,9 @@ import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { register } from '../../actionCreators';
-import { completeRegistrationWithErrors } from '../../actionCreators/registration';
+import { completeRegistration, completeRegistrationWithErrors } from '../../actionCreators/registration';
 import rootReducer from '../../reducers';
-import { getRegistrationErrors } from '../../selectors';
+import { getRegistrationComplete, getRegistrationErrors } from '../../selectors';
 
 import { RegistrationForm, mapDispatchToProps, mapStateToProps } from '../RegistrationForm';
 
@@ -19,10 +19,11 @@ const middlewares = [thunk];
 const mockStore = createMockStore(middlewares);
 
 
-const setup = (errors = {}) => {
+const setup = ({ errors = {}, isComplete = false } = {}) => {
   const props = {
     onSubmit: jest.fn(),
     errors,
+    isComplete,
   };
   const wrapper = shallow(<RegistrationForm {...props} />);
 
@@ -59,7 +60,7 @@ describe('RegistrationForm', () => {
     const passwordError = ['Invalid password.'];
     const errors = { email: emailError, password: passwordError };
 
-    const { wrapper } = setup(errors);
+    const { wrapper } = setup({ errors });
 
     const findErrors = (errorList) => {
       errorList.forEach((error) => {
@@ -108,18 +109,37 @@ describe('RegistrationForm', () => {
     });
   });
 
+  it('should redirect to the dashboard if complete', () => {
+    const { wrapper } = setup({ isComplete: true });
+    const redirect = wrapper.find('Redirect');
+
+    expect(redirect).toHaveLength(1);
+    expect(redirect.prop('to')).toBe('/');
+  });
+
   describe('redux connections', () => {
-    it('should pass any form errors from state as props', () => {
-      const errors = { email: ['Invalid email.'] };
+    describe('mapStateToProps', () => {
+      it('should pass any form errors from state as props', () => {
+        const errors = { email: ['Invalid email.'] };
 
-      const store = createStore(rootReducer);
-      store.dispatch(completeRegistrationWithErrors(errors));
+        const store = createStore(rootReducer);
+        store.dispatch(completeRegistrationWithErrors(errors));
 
-      const expectedProps = {
-        errors: getRegistrationErrors(store.getState()),
-      };
+        const state = store.getState();
+        const expected = getRegistrationErrors(state);
 
-      expect(mapStateToProps(store.getState())).toEqual(expectedProps);
+        expect(mapStateToProps(state).errors).toEqual(expected);
+      });
+
+      it('should pass a prop indicating if the form is complete', () => {
+        const store = createStore(rootReducer);
+        store.dispatch(completeRegistration({}));
+
+        const state = store.getState();
+        const expected = getRegistrationComplete(state);
+
+        expect(mapStateToProps(state).isComplete).toBe(expected);
+      });
     });
 
     it('should pass props that dispatch actions', () => {

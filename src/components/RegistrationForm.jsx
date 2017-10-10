@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import { register } from '../actionCreators';
-import { getRegistrationErrors } from '../selectors';
+import { getRegistrationComplete, getRegistrationErrors } from '../selectors';
 
 
 export class RegistrationForm extends React.Component {
@@ -32,6 +33,10 @@ export class RegistrationForm extends React.Component {
   }
 
   render() {
+    if (this.props.isComplete) {
+      return <Redirect to="/" />;
+    }
+
     return (
       <form onSubmit={this.handleSubmit}>
         <label htmlFor="email">Email:</label>
@@ -68,6 +73,7 @@ export class RegistrationForm extends React.Component {
 
 RegistrationForm.defaultProps = {
   errors: {},
+  isComplete: false,
 };
 
 RegistrationForm.propTypes = {
@@ -76,12 +82,14 @@ RegistrationForm.propTypes = {
     non_field_erros: PropTypes.arrayOf(PropTypes.string),
     password: PropTypes.arrayOf(PropTypes.string),
   }),
+  isComplete: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
 };
 
 
 export const mapStateToProps = state => ({
   errors: getRegistrationErrors(state),
+  isComplete: getRegistrationComplete(state),
 });
 
 

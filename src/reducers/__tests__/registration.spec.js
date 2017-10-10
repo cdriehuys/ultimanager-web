@@ -11,6 +11,7 @@ describe('Registration Reducer', () => {
   it('should have some initial state', () => {
     const expected = {
       errors: {},
+      isComplete: false,
       isPending: false,
     };
 
@@ -27,6 +28,7 @@ describe('Registration Reducer', () => {
 
     const expected = {
       ...initialState,
+      isComplete: true,
       isPending: false,
     };
 

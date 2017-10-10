@@ -1,11 +1,19 @@
 import { Register } from '../actions';
 
 
-export default (state = { errors: {}, isPending: false }, action = {}) => {
+const defaultState = {
+  errors: {},
+  isComplete: false,
+  isPending: false,
+};
+
+
+export default (state = defaultState, action = {}) => {
   switch (action.type) {
     case Register.REQUEST_COMPLETE:
       return {
         ...state,
+        isComplete: true,
         isPending: false,
       };
 
