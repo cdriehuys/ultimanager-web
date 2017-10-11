@@ -5,9 +5,9 @@ import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { register } from '../../actionCreators';
-import { completeRegistration, completeRegistrationWithErrors } from '../../actionCreators/registration';
+import { completeRegistration, completeRegistrationWithErrors, sendRegistration } from '../../actionCreators/registration';
 import rootReducer from '../../reducers';
-import { getRegistrationComplete, getRegistrationErrors } from '../../selectors';
+import { getRegistrationComplete, getRegistrationErrors, getRegistrationLoading } from '../../selectors';
 
 import { RegistrationForm, mapDispatchToProps, mapStateToProps } from '../RegistrationForm';
 
@@ -19,11 +19,12 @@ const middlewares = [thunk];
 const mockStore = createMockStore(middlewares);
 
 
-const setup = ({ errors = {}, isComplete = false } = {}) => {
+const setup = ({ errors = {}, isComplete = false, isLoading = false } = {}) => {
   const props = {
     onSubmit: jest.fn(),
     errors,
     isComplete,
+    isLoading,
   };
   const wrapper = shallow(<RegistrationForm {...props} />);
 
@@ -75,6 +76,28 @@ describe('RegistrationForm', () => {
     findErrors(passwordError);
   });
 
+  it('should redirect to the dashboard if complete', () => {
+    const { wrapper } = setup({ isComplete: true });
+    const redirect = wrapper.find('Redirect');
+
+    expect(redirect).toHaveLength(1);
+    expect(redirect.prop('to')).toBe('/');
+  });
+
+  it('should disable inputs if isLoading is true', () => {
+    const { wrapper } = setup({ isLoading: true });
+
+    // All inputs should be disabled
+    wrapper.find('input').forEach((node) => {
+      expect(node.prop('disabled')).toBe(true);
+    });
+
+    // Buttons should be disabled too
+    wrapper.find('button').forEach((node) => {
+      expect(node.prop('disabled')).toBe(true);
+    });
+  });
+
   describe('input handlers', () => {
     it('should have a handler to update email state', () => {
       const { wrapper } = setup();
@@ -109,14 +132,6 @@ describe('RegistrationForm', () => {
     });
   });
 
-  it('should redirect to the dashboard if complete', () => {
-    const { wrapper } = setup({ isComplete: true });
-    const redirect = wrapper.find('Redirect');
-
-    expect(redirect).toHaveLength(1);
-    expect(redirect.prop('to')).toBe('/');
-  });
-
   describe('redux connections', () => {
     describe('mapStateToProps', () => {
       it('should pass any form errors from state as props', () => {
@@ -139,6 +154,16 @@ describe('RegistrationForm', () => {
         const expected = getRegistrationComplete(state);
 
         expect(mapStateToProps(state).isComplete).toBe(expected);
+      });
+
+      it('should pass a prop indicating if the form is loading', () => {
+        const store = createStore(rootReducer);
+        store.dispatch(sendRegistration({}));
+
+        const state = store.getState();
+        const expected = getRegistrationLoading(state);
+
+        expect(mapStateToProps(state).isLoading).toBe(expected);
       });
     });
 

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { register } from '../actionCreators';
-import { getRegistrationComplete, getRegistrationErrors } from '../selectors';
+import { getRegistrationComplete, getRegistrationErrors, getRegistrationLoading } from '../selectors';
 
 
 export class RegistrationForm extends React.Component {
@@ -41,6 +41,7 @@ export class RegistrationForm extends React.Component {
       <form onSubmit={this.handleSubmit}>
         <label htmlFor="email">Email:</label>
         <input
+          disabled={this.props.isLoading}
           id="email"
           name="email"
           onChange={this.handleInputChange}
@@ -54,6 +55,7 @@ export class RegistrationForm extends React.Component {
 
         <label htmlFor="password">Password:</label>
         <input
+          disabled={this.props.isLoading}
           id="password"
           name="password"
           onChange={this.handleInputChange}
@@ -65,7 +67,12 @@ export class RegistrationForm extends React.Component {
           ))}
         </ul>
 
-        <button type="submit">Register</button>
+        <button
+          disabled={this.props.isLoading}
+          type="submit"
+        >
+          Register
+        </button>
       </form>
     );
   }
@@ -74,6 +81,7 @@ export class RegistrationForm extends React.Component {
 RegistrationForm.defaultProps = {
   errors: {},
   isComplete: false,
+  isLoading: false,
 };
 
 RegistrationForm.propTypes = {
@@ -83,6 +91,7 @@ RegistrationForm.propTypes = {
     password: PropTypes.arrayOf(PropTypes.string),
   }),
   isComplete: PropTypes.bool,
+  isLoading: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
 };
 
@@ -90,6 +99,7 @@ RegistrationForm.propTypes = {
 export const mapStateToProps = state => ({
   errors: getRegistrationErrors(state),
   isComplete: getRegistrationComplete(state),
+  isLoading: getRegistrationLoading(state),
 });
 
 

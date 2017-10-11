@@ -1,9 +1,9 @@
 import { createStore } from 'redux';
 
-import { completeRegistration, completeRegistrationWithErrors } from '../../actionCreators/registration';
+import { completeRegistration, completeRegistrationWithErrors, sendRegistration } from '../../actionCreators/registration';
 import rootReducer from '../../reducers';
 
-import { getRegistrationComplete, getRegistrationErrors } from '../';
+import { getRegistrationComplete, getRegistrationErrors, getRegistrationLoading } from '../';
 
 
 describe('getRegistrationComplete selector', () => {
@@ -11,7 +11,9 @@ describe('getRegistrationComplete selector', () => {
     const store = createStore(rootReducer);
     store.dispatch(completeRegistration({}));
 
-    expect(getRegistrationComplete(store.getState())).toBe(true);
+    const state = store.getState();
+
+    expect(getRegistrationComplete(state)).toBe(state.registration.isComplete);
   });
 });
 
@@ -23,6 +25,20 @@ describe('getRegistrationErrors selector', () => {
     const store = createStore(rootReducer);
     store.dispatch(completeRegistrationWithErrors(errors));
 
-    expect(getRegistrationErrors(store.getState())).toEqual(errors);
+    const state = store.getState();
+
+    expect(getRegistrationErrors(state)).toEqual(state.registration.errors);
+  });
+});
+
+
+describe('getRegistrationLoading selector', () => {
+  it('should return a boolean indicating if the registration request is pending', () => {
+    const store = createStore(rootReducer);
+    store.dispatch(sendRegistration({}));
+
+    const state = store.getState();
+
+    expect(getRegistrationLoading(state)).toBe(state.registration.isPending);
   });
 });
