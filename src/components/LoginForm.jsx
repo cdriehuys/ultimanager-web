@@ -1,26 +1,38 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { login } from '../actionCreators';
 
 
 /**
  * A form for logging in with a username and password.
  *
  * When the form is submitted, the 'onSubmit' prop is called with the user's
- * username and password.
+ * email and password.
  */
-class LoginForm extends React.Component {
+export class LoginForm extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      email: '',
       password: '',
-      username: '',
     };
 
     // Bind event handlers to maintain correct context
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+  }
+
+  /**
+   * Update the component's email state to match the input field.
+   */
+  handleEmailChange(e) {
+    this.setState({
+      email: e.target.value,
+    });
   }
 
   /**
@@ -35,21 +47,12 @@ class LoginForm extends React.Component {
   /**
    * Handle submitting the form.
    *
-   * This calls the 'onSubmit' prop with the provided username and password.
+   * This calls the 'onSubmit' prop with the provided email and password.
    */
   handleSubmit(e) {
     e.preventDefault();
 
-    this.props.onSubmit(this.state.username, this.state.password);
-  }
-
-  /**
-   * Update the component's username state to match the input field.
-   */
-  handleUsernameChange(e) {
-    this.setState({
-      username: e.target.value,
-    });
+    this.props.onSubmit(this.state.email, this.state.password);
   }
 
   /**
@@ -58,11 +61,11 @@ class LoginForm extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <label htmlFor="username">Username:</label>
+        <label htmlFor="email">Email:</label>
         <input
-          id="username"
-          name="username"
-          onChange={this.handleUsernameChange}
+          id="email"
+          name="email"
+          onChange={this.handleEmailChange}
         />
         <br />
 
@@ -86,4 +89,9 @@ LoginForm.propTypes = {
 };
 
 
-export default LoginForm;
+export const mapDispatchToProps = dispatch => ({
+  onSubmit: (email, password) => dispatch(login(email, password)),
+});
+
+
+export default connect(null, mapDispatchToProps)(LoginForm);

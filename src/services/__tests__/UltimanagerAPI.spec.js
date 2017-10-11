@@ -12,6 +12,27 @@ axios.defaults.adapter = httpAdapter;
 
 
 describe('UltimanagerAPI', () => {
+  describe('login', () => {
+    it('should use an email and password to obtain a token', () => {
+      const credentials = {
+        email: 'test@example.com',
+        password: 'password',
+      };
+
+      const responseData = {
+        token: 'token',
+      };
+
+      nock(settings.API_ROOT)
+        .post('/auth/login/', credentials)
+        .reply(200, responseData);
+
+      return UltimanagerAPI.login(credentials).then((data) => {
+        expect(data).toEqual(responseData);
+      });
+    });
+  });
+
   describe('register', () => {
     it('should send a request and return the response', () => {
       const registrationData = {

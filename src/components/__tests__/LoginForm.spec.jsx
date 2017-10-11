@@ -1,7 +1,19 @@
 import { shallow } from 'enzyme';
 import React from 'react';
+import createStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
-import LoginForm from '../LoginForm';
+import { login } from '../../actionCreators';
+import rootReducer from '../../reducers';
+
+import { LoginForm, mapDispatchToProps } from '../LoginForm';
+
+
+jest.mock('../../services/UltimanagerAPI');
+
+
+const middlewares = [thunk];
+const mockStore = createStore(middlewares);
 
 
 const setup = () => {
@@ -18,16 +30,16 @@ const setup = () => {
 
 
 describe('LoginForm', () => {
-  it('should initially have empty strings for username and password', () => {
+  it('should initially have empty strings for email and password', () => {
     const { wrapper } = setup();
 
+    expect(wrapper.state('email')).toEqual('');
     expect(wrapper.state('password')).toEqual('');
-    expect(wrapper.state('username')).toEqual('');
   });
 
-  it('should call onSubmit with a username and password when submitted', () => {
+  it('should call onSubmit with a email and password when submitted', () => {
     const credentials = {
-      username: 'username',
+      email: 'test@example.com',
       password: 'password',
     };
 
@@ -36,10 +48,21 @@ describe('LoginForm', () => {
 
     wrapper.find('form').simulate('submit', { preventDefault: () => {} });
 
-    expect(props.onSubmit).toHaveBeenCalledWith(credentials.username, credentials.password);
+    expect(props.onSubmit).toHaveBeenCalledWith(credentials.email, credentials.password);
   });
 
   describe('change handlers', () => {
+    it('should update the email in state on a keypress', () => {
+      const { wrapper } = setup();
+      const emailWrapper = wrapper.find('#email');
+
+      const newemail = 'email';
+
+      emailWrapper.simulate('change', { target: { value: newemail } });
+
+      expect(wrapper.state('email')).toEqual(newemail);
+    });
+
     it('should update the password in state on a keypress', () => {
       const { wrapper } = setup();
       const passwordWrapper = wrapper.find('#password');
@@ -50,16 +73,25 @@ describe('LoginForm', () => {
 
       expect(wrapper.state('password')).toEqual(newPassword);
     });
+  });
 
-    it('should update the username in state on a keypress', () => {
-      const { wrapper } = setup();
-      const usernameWrapper = wrapper.find('#username');
+  describe('Redux Connections', () => {
+    describe('mapDispatchToProps', () => {
+      it('should provide an onSubmit function to dispatch the login attempt', () => {
+        const email = 'test@example.com';
+        const password = 'password';
 
-      const newUsername = 'username';
+        const store = mockStore(rootReducer());
+        const expectedStore = mockStore(rootReducer());
 
-      usernameWrapper.simulate('change', { target: { value: newUsername } });
+        const props = mapDispatchToProps(store.dispatch);
 
-      expect(wrapper.state('username')).toEqual(newUsername);
+        return props.onSubmit(email, password)
+          .then(() => expectedStore.dispatch(login(email, password)))
+          .then(() => {
+            expect(store.getActions()).toEqual(expectedStore.getActions());
+          });
+      });
     });
   });
 });
