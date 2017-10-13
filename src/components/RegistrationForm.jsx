@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { register } from '../actionCreators';
-import Input from './Input';
+import Field from './Field';
 import { getRegistrationComplete, getRegistrationErrors, getRegistrationLoading } from '../selectors';
 
 
@@ -40,33 +40,24 @@ export class RegistrationForm extends React.Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <label htmlFor="email">Email:</label>
-        <Input
+        <Field
           disabled={this.props.isLoading}
-          id="email"
+          errors={this.props.errors.email}
+          label="Email"
           name="email"
           onChange={this.handleInputChange}
           type="email"
         />
-        <ul>
-          {this.props.errors.email && this.props.errors.email.map(error => (
-            <li key={error}>{error}</li>
-          ))}
-        </ul>
 
-        <label htmlFor="password">Password:</label>
-        <Input
+        <Field
           disabled={this.props.isLoading}
+          errors={this.props.errors.password}
           id="password"
+          label="Password"
           name="password"
           onChange={this.handleInputChange}
           type="password"
         />
-        <ul>
-          {this.props.errors.password && this.props.errors.password.map(error => (
-            <li key={error}>{error}</li>
-          ))}
-        </ul>
 
         <button
           disabled={this.props.isLoading}
@@ -88,7 +79,7 @@ RegistrationForm.defaultProps = {
 RegistrationForm.propTypes = {
   errors: PropTypes.shape({
     email: PropTypes.arrayOf(PropTypes.string),
-    non_field_erros: PropTypes.arrayOf(PropTypes.string),
+    non_field_errors: PropTypes.arrayOf(PropTypes.string),
     password: PropTypes.arrayOf(PropTypes.string),
   }),
   isComplete: PropTypes.bool,

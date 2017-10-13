@@ -8,8 +8,8 @@ import React from 'react';
  * @param {string} props.name The name to give the input field.
  * @param {...object} [props.extraProps] Any additional props to pass to the input field.
  */
-const Input = ({ ...extraProps }) => (
-  <input {...extraProps} />
+const Input = ({ name, ...extraProps }) => (
+  <input name={name} {...extraProps} />
 );
 
 Input.propTypes = {
