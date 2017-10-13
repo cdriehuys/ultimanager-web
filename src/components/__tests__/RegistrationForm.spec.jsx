@@ -43,17 +43,16 @@ describe('RegistrationForm', () => {
     expect(wrapper.state('password')).toBe('');
   });
 
-  it('should call its onSubmit prop when submitted', () => {
-    const userData = { email: 'test@example.com', password: 'password' };
-    const { props, wrapper } = setup();
-    wrapper.instance().state = userData;
+  it('should render an email and password field', () => {
+    const { wrapper } = setup();
+    const email = wrapper.find('Field[name="email"]');
+    const password = wrapper.find('Field[name="password"]');
 
-    const mockEvent = { preventDefault: jest.fn() };
+    expect(email.prop('onChange')).toBe(wrapper.instance().handleInputChange);
+    expect(email.prop('type')).toBe('email');
 
-    wrapper.simulate('submit', mockEvent);
-
-    expect(mockEvent.preventDefault).toHaveBeenCalled();
-    expect(props.onSubmit).toHaveBeenCalledWith(userData);
+    expect(password.prop('onChange')).toBe(wrapper.instance().handleInputChange);
+    expect(password.prop('type')).toBe('password');
   });
 
   it('should render any provided errors', () => {
@@ -63,17 +62,11 @@ describe('RegistrationForm', () => {
 
     const { wrapper } = setup({ errors });
 
-    const findErrors = (errorList) => {
-      errorList.forEach((error) => {
-        const errorWrapper = wrapper.findWhere(n => n.key() === error);
+    Object.keys(errors).forEach((field) => {
+      const fieldComponent = wrapper.find(`Field[name="${field}"]`);
 
-        expect(errorWrapper).toHaveLength(1);
-        expect(errorWrapper.text()).toBe(error);
-      });
-    };
-
-    findErrors(emailError);
-    findErrors(passwordError);
+      expect(fieldComponent.prop('errors')).toEqual(errors[field]);
+    });
   });
 
   it('should redirect to the dashboard if complete', () => {
@@ -88,7 +81,7 @@ describe('RegistrationForm', () => {
     const { wrapper } = setup({ isLoading: true });
 
     // All inputs should be disabled
-    wrapper.find('input').forEach((node) => {
+    wrapper.find('Field').forEach((node) => {
       expect(node.prop('disabled')).toBe(true);
     });
 
@@ -98,41 +91,37 @@ describe('RegistrationForm', () => {
     });
   });
 
-  describe('input handlers', () => {
-    it('should have a handler to update email state', () => {
+  describe('Event Handlers', () => {
+    it('should update its state when an input changes', () => {
       const { wrapper } = setup();
-      const emailWrapper = wrapper.find('input[name="email"]');
 
-      const newEmail = 'test@example.com';
-
-      emailWrapper.simulate('change', {
+      const mockChange = {
         target: {
-          name: 'email',
-          value: newEmail,
+          name: 'foo',
+          value: 'bar',
         },
-      });
+      };
 
-      expect(wrapper.state('email')).toBe(newEmail);
+      wrapper.instance().handleInputChange(mockChange);
+
+      expect(wrapper.state(mockChange.target.name)).toBe(mockChange.target.value);
     });
 
-    it('should have a handler to update password state', () => {
-      const { wrapper } = setup();
-      const passwordWrapper = wrapper.find('input[name="password"]');
+    it('should call its onSubmit prop when submitted', () => {
+      const userData = { email: 'test@example.com', password: 'password' };
+      const { props, wrapper } = setup();
+      wrapper.instance().state = userData;
 
-      const newPassword = 'password';
+      const mockEvent = { preventDefault: jest.fn() };
 
-      passwordWrapper.simulate('change', {
-        target: {
-          name: 'password',
-          value: newPassword,
-        },
-      });
+      wrapper.simulate('submit', mockEvent);
 
-      expect(wrapper.state('password')).toBe(newPassword);
+      expect(mockEvent.preventDefault).toHaveBeenCalled();
+      expect(props.onSubmit).toHaveBeenCalledWith(userData);
     });
   });
 
-  describe('redux connections', () => {
+  describe('Redux Connections', () => {
     describe('mapStateToProps', () => {
       it('should pass any form errors from state as props', () => {
         const errors = { email: ['Invalid email.'] };
