@@ -101,7 +101,7 @@ describe('RegistrationForm', () => {
   describe('input handlers', () => {
     it('should have a handler to update email state', () => {
       const { wrapper } = setup();
-      const emailWrapper = wrapper.find('input[name="email"]');
+      const emailWrapper = wrapper.find('Input[name="email"]');
 
       const newEmail = 'test@example.com';
 
@@ -117,7 +117,7 @@ describe('RegistrationForm', () => {
 
     it('should have a handler to update password state', () => {
       const { wrapper } = setup();
-      const passwordWrapper = wrapper.find('input[name="password"]');
+      const passwordWrapper = wrapper.find('Input[name="password"]');
 
       const newPassword = 'password';
 

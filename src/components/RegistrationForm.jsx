@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { register } from '../actionCreators';
+import Input from './Input';
 import { getRegistrationComplete, getRegistrationErrors, getRegistrationLoading } from '../selectors';
 
 
@@ -40,7 +41,7 @@ export class RegistrationForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label htmlFor="email">Email:</label>
-        <input
+        <Input
           disabled={this.props.isLoading}
           id="email"
           name="email"
@@ -54,7 +55,7 @@ export class RegistrationForm extends React.Component {
         </ul>
 
         <label htmlFor="password">Password:</label>
-        <input
+        <Input
           disabled={this.props.isLoading}
           id="password"
           name="password"
