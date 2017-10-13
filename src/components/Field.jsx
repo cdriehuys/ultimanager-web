@@ -1,7 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'styled-components';
 
 import Input from './Input';
+
+
+export const StyledLabel = styled.label`
+  display: block;
+  font-weight: bold;
+  line-height: 1.618;
+`;
 
 
 /**
@@ -15,7 +23,7 @@ import Input from './Input';
  */
 const Field = ({ errors, id, label, name, ...extraProps }) => (
   <div>
-    <label htmlFor={id || name}>{label}</label>
+    <StyledLabel htmlFor={id || name}>{label}</StyledLabel>
     <Input id={id || name} name={name} {...extraProps} />
     {errors.length > 0 && (
       <ul>

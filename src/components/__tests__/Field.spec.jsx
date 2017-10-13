@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import Field from '../Field';
+import Field, { StyledLabel } from '../Field';
 
 
 const setup = ({ label = 'Foo', name = 'foo', ...rest } = {}) => {
@@ -22,9 +22,9 @@ const setup = ({ label = 'Foo', name = 'foo', ...rest } = {}) => {
 describe('Field Component', () => {
   it('should render a label', () => {
     const { props, wrapper } = setup();
-    const label = wrapper.find('label');
+    const label = wrapper.find(StyledLabel);
 
-    expect(label.text()).toBe(props.label);
+    expect(label.children().text()).toBe(props.label);
   });
 
   it('should render an Input', () => {
@@ -45,7 +45,7 @@ describe('Field Component', () => {
   it('should provide a default ID equivalent to the given name', () => {
     const { props, wrapper } = setup();
     const input = wrapper.find('Input');
-    const label = wrapper.find('label');
+    const label = wrapper.find(StyledLabel);
 
     expect(input.prop('id')).toBe(props.name);
     expect(label.prop('htmlFor')).toBe(props.name);
@@ -55,7 +55,7 @@ describe('Field Component', () => {
     const id = 'custom-id';
     const { wrapper } = setup({ id });
     const input = wrapper.find('Input');
-    const label = wrapper.find('label');
+    const label = wrapper.find(StyledLabel);
 
     expect(input.prop('id')).toBe(id);
     expect(label.prop('htmlFor')).toBe(id);

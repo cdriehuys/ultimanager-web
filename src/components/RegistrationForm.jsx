@@ -46,6 +46,7 @@ export class RegistrationForm extends React.Component {
           label="Email"
           name="email"
           onChange={this.handleInputChange}
+          placeholder="test@example.com"
           type="email"
         />
 
