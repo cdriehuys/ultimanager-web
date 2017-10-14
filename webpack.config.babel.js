@@ -16,6 +16,9 @@ plugins.push(new HTMLWebpackPlugin({
   appMountId: 'app',
   filename: path.resolve(BUILD_DIR, 'index.html'),
   inject: false,
+  links: [
+    'https://fonts.googleapis.com/css?family=Open+Sans|Roboto:100',
+  ],
   mobile: true,
   template: HTMLWebpackTemplate,
   title: 'UltiManager',

@@ -78,7 +78,7 @@ describe('Field Component', () => {
 
       errors.forEach((error) => {
         const node = errorList.findWhere(n => n.key() === error);
-        expect(node.text()).toBe(error);
+        expect(node.children().children().text()).toBe(error);
       });
     });
   });

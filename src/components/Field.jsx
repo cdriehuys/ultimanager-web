@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
 
 import Input from './Input';
+import { Text } from './typography';
 
 
-export const StyledLabel = styled.label`
+export const StyledLabel = Text.withComponent('label').extend`
   display: block;
   font-weight: bold;
-  line-height: 1.618;
 `;
 
 
@@ -28,7 +27,7 @@ const Field = ({ errors, id, label, name, ...extraProps }) => (
     {errors.length > 0 && (
       <ul>
         {errors.map(error => (
-          <li key={error}>{error}</li>
+          <li key={error}><Text size={5}>{error}</Text></li>
         ))}
       </ul>
     )}

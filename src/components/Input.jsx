@@ -5,9 +5,12 @@ import styled from 'styled-components';
 
 export const StyledInput = styled.input`
   border: 1px solid #e2e2e2;
-  border-radius: 3px;
+  border-radius: ${props => props.theme.borderRadius};
   display: block;
-  padding: .5em;
+  font-family: ${props => props.theme.fonts.families.body};
+  line-height: ${props => props.theme.fonts.lineHeight};
+  margin: 0;
+  padding: .25em;
   width: 100%;
 
   &:focus {

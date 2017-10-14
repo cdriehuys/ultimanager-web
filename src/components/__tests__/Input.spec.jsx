@@ -1,6 +1,8 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
+import theme from '../../styles/theme';
+
 import Input, { StyledInput } from '../Input';
 
 
@@ -16,6 +18,17 @@ const setup = ({ name = 'foo', ...rest } = {}) => {
     wrapper,
   };
 };
+
+
+describe('StyledInput Component', () => {
+  it('should pull some properties from its theme', () => {
+    const wrapper = shallow(<StyledInput theme={theme} />);
+
+    expect(wrapper).toHaveStyleRule('border-radius', theme.borderRadius);
+    expect(wrapper).toHaveStyleRule('font-family', theme.fonts.families.body.replace(', ', ','));
+    expect(wrapper).toHaveStyleRule('line-height', theme.fonts.lineHeight.toString());
+  });
+});
 
 
 describe('Input Component', () => {
