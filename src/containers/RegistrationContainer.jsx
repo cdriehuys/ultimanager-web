@@ -1,14 +1,15 @@
 import React from 'react';
 
+import Container from '../components/Container';
 import RegistrationForm from '../components/RegistrationForm';
 import { Heading } from '../components/typography';
 
 
 const RegistrationContainer = () => (
-  <div>
+  <Container>
     <Heading.h1 align="center">Register</Heading.h1>
     <RegistrationForm />
-  </div>
+  </Container>
 );
 
 

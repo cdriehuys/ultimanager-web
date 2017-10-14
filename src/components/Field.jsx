@@ -1,8 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'styled-components';
 
 import Input from './Input';
 import { Text } from './typography';
+
+
+export const FieldWrapper = styled.div`
+  margin: 1em 0;
+`;
 
 
 export const StyledLabel = Text.withComponent('label').extend`
@@ -21,7 +27,7 @@ export const StyledLabel = Text.withComponent('label').extend`
  * @param {...object} [props.extraProps] Additional props to pass to the input component.
  */
 const Field = ({ errors, id, label, name, ...extraProps }) => (
-  <div>
+  <FieldWrapper>
     <StyledLabel htmlFor={id || name}>{label}</StyledLabel>
     <Input id={id || name} name={name} {...extraProps} />
     {errors.length > 0 && (
@@ -31,7 +37,7 @@ const Field = ({ errors, id, label, name, ...extraProps }) => (
         ))}
       </ul>
     )}
-  </div>
+  </FieldWrapper>
 );
 
 Field.defaultProps = {

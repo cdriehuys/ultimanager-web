@@ -13,6 +13,7 @@ import Dashboard from './containers/Dashboard';
 import LoginContainer from './containers/LoginContainer';
 import RegistrationContainer from './containers/RegistrationContainer';
 import appReducer from './reducers';
+import globalStyles from './styles/global';
 import theme from './styles/theme';
 
 
@@ -34,20 +35,24 @@ const store = createStore(
     applyMiddleware(thunk, logger)));
 
 
-const Root = () => (
-  <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <div>
-          <Route exact path="/" component={Dashboard} />
-          <Route path="/login" component={LoginContainer} />
-          <Route path="/register" component={RegistrationContainer} />
-          <Route path="/teams/:id" component={TeamDetail} />
-        </div>
-      </BrowserRouter>
-    </ThemeProvider>
-  </Provider>
-);
+const Root = () => {
+  globalStyles();
+
+  return (
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <div>
+            <Route exact path="/" component={Dashboard} />
+            <Route path="/login" component={LoginContainer} />
+            <Route path="/register" component={RegistrationContainer} />
+            <Route path="/teams/:id" component={TeamDetail} />
+          </div>
+        </BrowserRouter>
+      </ThemeProvider>
+    </Provider>
+  );
+};
 
 
 ReactDOM.render(<Root />, document.getElementById('app'));
