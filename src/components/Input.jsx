@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 
 export const StyledInput = styled.input`
-  border: 1px solid #e2e2e2;
+  border: 1px solid ${props => props.theme.colors.accentGray};
   border-radius: ${props => props.theme.borderRadius};
   display: block;
   font-family: ${props => props.theme.fonts.families.body};

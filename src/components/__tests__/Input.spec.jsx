@@ -24,6 +24,7 @@ describe('StyledInput Component', () => {
   it('should pull some properties from its theme', () => {
     const wrapper = shallow(<StyledInput theme={theme} />);
 
+    expect(wrapper).toHaveStyleRule('border', `1px solid ${theme.colors.accentGray}`);
     expect(wrapper).toHaveStyleRule('border-radius', theme.borderRadius);
     expect(wrapper).toHaveStyleRule('font-family', theme.fonts.families.body.replace(', ', ','));
     expect(wrapper).toHaveStyleRule('line-height', theme.fonts.lineHeight.toString());

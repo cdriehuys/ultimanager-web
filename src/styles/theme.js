@@ -1,5 +1,8 @@
 export default {
   borderRadius: '3px',
+  colors: {
+    accentGray: '#ddd',
+  },
   fonts: {
     families: {
       body: "'Open Sans', sans-serif",

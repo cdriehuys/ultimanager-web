@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { register } from '../actionCreators';
+import Button from './Button';
 import Field from './Field';
 import { getRegistrationComplete, getRegistrationErrors, getRegistrationLoading } from '../selectors';
 
@@ -60,12 +61,12 @@ export class RegistrationForm extends React.Component {
           type="password"
         />
 
-        <button
+        <Button
           disabled={this.props.isLoading}
           type="submit"
         >
           Register
-        </button>
+        </Button>
       </form>
     );
   }
