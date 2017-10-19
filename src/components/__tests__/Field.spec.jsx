@@ -64,7 +64,7 @@ describe('Field Component', () => {
   describe('Error Rendering', () => {
     it('should not render an error list with no errors', () => {
       const { wrapper } = setup();
-      const errorList = wrapper.find('ul');
+      const errorList = wrapper.find('List');
 
       expect(errorList).toHaveLength(0);
     });
@@ -72,14 +72,16 @@ describe('Field Component', () => {
     it('should map each error to a list item', () => {
       const errors = ['Error 1', 'Error 2', 'Another error'];
       const { wrapper } = setup({ errors });
-      const errorList = wrapper.find('ul');
+
+      const input = wrapper.find('Input');
+
+      expect(input.prop('error')).toBe(true);
+
+      const errorList = wrapper.find('List');
 
       expect(errorList).toHaveLength(1);
-
-      errors.forEach((error) => {
-        const node = errorList.findWhere(n => n.key() === error);
-        expect(node.children().children().text()).toBe(error);
-      });
+      expect(errorList.prop('error')).toBe(true);
+      expect(errorList.prop('items')).toEqual(errors);
     });
   });
 });
