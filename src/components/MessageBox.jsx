@@ -1,3 +1,4 @@
+import { transparentize } from 'polished';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
@@ -6,8 +7,8 @@ import List from './List';
 
 
 export const Wrapper = styled.div`
-  background: rgba(255, 0, 0, .25);
-  border: 1px solid red;
+  background: ${props => transparentize(0.75, props.theme.colors.error)};
+  border: 1px solid ${props => props.theme.colors.error};
   border-radius: ${props => props.theme.borderRadius};
   margin: .5em 0;
   padding: .5em 1em;

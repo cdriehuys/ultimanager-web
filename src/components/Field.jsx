@@ -30,7 +30,7 @@ export const StyledLabel = Text.withComponent('label').extend`
 const Field = ({ errors, id, label, name, ...extraProps }) => (
   <FieldWrapper>
     <StyledLabel htmlFor={id || name}>{label}</StyledLabel>
-    <Input id={id || name} name={name} {...extraProps} />
+    <Input error={errors.length > 0} id={id || name} name={name} {...extraProps} />
     {errors.length > 0 && (
       <MessageBox list={errors} />
     )}

@@ -29,6 +29,12 @@ describe('StyledInput Component', () => {
     expect(wrapper).toHaveStyleRule('font-family', theme.fonts.families.body.replace(', ', ','));
     expect(wrapper).toHaveStyleRule('line-height', theme.fonts.lineHeight.toString());
   });
+
+  it('should have an special outline if errored', () => {
+    const wrapper = shallow(<StyledInput error theme={theme} />);
+
+    expect(wrapper).toHaveStyleRule('border', `1px solid ${theme.colors.error}`);
+  });
 });
 
 

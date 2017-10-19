@@ -72,6 +72,11 @@ describe('Field Component', () => {
     it('should map each error to a list item', () => {
       const errors = ['Error 1', 'Error 2', 'Another error'];
       const { wrapper } = setup({ errors });
+
+      const input = wrapper.find('Input');
+
+      expect(input.prop('error')).toBe(true);
+
       const errorList = wrapper.find('MessageBox');
 
       expect(errorList).toHaveLength(1);

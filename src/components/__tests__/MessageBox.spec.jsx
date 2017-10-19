@@ -1,4 +1,5 @@
 import { shallow } from 'enzyme';
+import { transparentize } from 'polished';
 import React from 'react';
 
 import theme from '../../styles/theme';
@@ -24,6 +25,8 @@ describe('MessageBox Component', () => {
     it('should pull some styles from the theme', () => {
       const wrapper = shallow(<Wrapper theme={theme} />);
 
+      expect(wrapper).toHaveStyleRule('background', transparentize(0.75, theme.colors.error));
+      expect(wrapper).toHaveStyleRule('border', `1px solid ${theme.colors.error}`);
       expect(wrapper).toHaveStyleRule('border-radius', theme.borderRadius);
     });
   });
