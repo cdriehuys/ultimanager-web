@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Input from './Input';
+import MessageBox from './MessageBox';
 import { Text } from './typography';
 
 
@@ -31,11 +32,7 @@ const Field = ({ errors, id, label, name, ...extraProps }) => (
     <StyledLabel htmlFor={id || name}>{label}</StyledLabel>
     <Input id={id || name} name={name} {...extraProps} />
     {errors.length > 0 && (
-      <ul>
-        {errors.map(error => (
-          <li key={error}><Text size={5}>{error}</Text></li>
-        ))}
-      </ul>
+      <MessageBox list={errors} />
     )}
   </FieldWrapper>
 );
