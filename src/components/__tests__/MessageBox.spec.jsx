@@ -32,19 +32,14 @@ describe('MessageBox Component', () => {
     it('should not render a list if the list is empty', () => {
       const { wrapper } = setup();
 
-      expect(wrapper.find('ul')).toHaveLength(0);
+      expect(wrapper.find('List')).toHaveLength(0);
     });
 
     it('should render a list of components if given', () => {
       const list = ['foo', 'bar', 'baz'];
       const { wrapper } = setup({ list });
 
-      list.forEach((item) => {
-        const itemWrapper = wrapper.findWhere(n => n.key() === item);
-
-        expect(itemWrapper).toHaveLength(1);
-        expect(itemWrapper.children().text()).toBe(item);
-      });
+      expect(wrapper.find('List').prop('items')).toEqual(list);
     });
   });
 });

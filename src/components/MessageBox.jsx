@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 
-import { Text } from './typography';
+import List from './List';
 
 
 export const Wrapper = styled.div`
@@ -14,13 +14,16 @@ export const Wrapper = styled.div`
 `;
 
 
+/**
+ * A box to display a message for the user.
+ *
+ * The message should be composed of a list of strings.
+ *
+ * @param {string[]} [props.list] A list of messages to render. Defaults to an empty list.
+ */
 const MessageBox = ({ list }) => (
   <Wrapper>
-    {list.length > 0 && (
-      <ul>
-        {list.map(item => <Text.li key={item} size={5}>{item}</Text.li>)}
-      </ul>
-    )}
+    {list.length > 0 && <List items={list} size={5} />}
   </Wrapper>
 );
 
