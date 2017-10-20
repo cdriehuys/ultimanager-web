@@ -2,6 +2,7 @@ export default {
   borderRadius: '3px',
   colors: {
     accentGray: '#ddd',
+    error: '#c93726',
   },
   fonts: {
     families: {

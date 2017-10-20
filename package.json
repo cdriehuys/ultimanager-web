@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "polished": "^1.8.1",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",

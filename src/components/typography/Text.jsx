@@ -22,4 +22,9 @@ Text.propTypes = {
 };
 
 
+// Allow text to be used with different components.
+Text.li = Text.withComponent('li');
+Text.p = Text.withComponent('p');
+
+
 export default Text;
